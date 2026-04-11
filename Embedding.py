@@ -28,7 +28,6 @@ if __name__ == "__main__":
         'hello': 5,
         'world': 6
     }
-    idx_to_word = {idx: word for word, idx in word_to_idx.items()}
     vocab_size = len(word_to_idx)
     d_model = 4
 
@@ -43,8 +42,16 @@ if __name__ == "__main__":
     # 4.构造模型输入 [seq_len, batch_size]
     seq_len = len(tokens)
     batch_size = 1
-    token_tensor = torch.tensor(tokens).unsqueeze(1)  # shape: (4) -> (4, 1)
+    token_tensor = torch.tensor(tokens).unsqueeze(1)    # shape: (4) -> (4, 1)
    
     # 5.初始化embedding并前向传播
     embed = TokenEmbedding(vocab_size, d_model)
-    emb_vecs = embed(token_tensor)
+    emb_vecs = embed(token_tensor)                      # =embed.forward(token_tensor)
+
+    # 6.打印结果，直观对应
+    print("\n=====每个单词对应的embedding向量")
+    for i, word in enumerate(setence.split()):
+        vec = emb_vecs[i, 0].detach().numpy()           # =emb_vecs[i, 0, :].detach().numpy()
+        print(f"{word:<12} -> {vec}")
+
+    print("\n输出shape:", emb_vecs.shape)               # (seq_len, batch_size, d_model)
