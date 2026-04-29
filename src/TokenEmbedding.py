@@ -47,9 +47,11 @@ if __name__ == "__main__":
     # 5.初始化embedding并前向传播
     embed = TokenEmbedding(vocab_size, d_model)
     emb_vecs = embed(token_tensor)                      # =embed.forward(token_tensor)
+    print("\n=====整句话对应的embedding向量=====")
+    print(emb_vecs.detach().numpy())
 
-    # 6.打印结果，直观对应
-    print("\n=====每个单词对应的embedding向量")
+    # 6.打印每个token对应的词向量
+    print("\n=====每个单词对应的embedding向量=====")
     for i, word in enumerate(setence.split()):
         vec = emb_vecs[i, 0].detach().numpy()           # =emb_vecs[i, 0, :].detach().numpy()
         print(f"{word:<12} -> {vec}")
